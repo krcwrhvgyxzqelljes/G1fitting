@@ -44,26 +44,27 @@ all: lib
 	@$(MKDIR) bin
 	$(CXX) $(INC) $(CXXFLAGS) -o bin/test1 src_tests/test1.cc $(LIBS)
 	$(CXX) $(INC) $(CXXFLAGS) -o bin/test2 src_tests/test2.cc $(LIBS)
+	$(CXX) $(INC) $(CXXFLAGS) -o bin/main src/main.cc $(LIBS)
 
 lib: lib/$(LIB_CLOTHOID)
 
 src/%.o: src/%.cc $(DEPS)
-	$(CXX) $(INC) $(CXXFLAGS) $(DEFS) -c $< -o $@ 
+	$(CXX) $(INC) $(CXXFLAGS) $(DEFS) -c $< -o $@
 
 src/%.o: src/%.c $(DEPS)
 	$(CC) $(INC) $(CFLAGS) $(DEFS) -c -o $@ $<
 
 lib/libClothoid.a: $(OBJS)
 	@$(MKDIR) lib
-	$(AR) lib/libClothoid.a $(OBJS) 
+	$(AR) lib/libClothoid.a $(OBJS)
 
 lib/libClothoid.dylib: $(OBJS)
 	@$(MKDIR) lib
-	$(CXX) -shared -o lib/libClothoid.dylib $(OBJS) 
+	$(CXX) -shared -o lib/libClothoid.dylib $(OBJS)
 
 lib/libClothoid.so: $(OBJS)
 	@$(MKDIR) lib
-	$(CXX) -shared -o lib/libClothoid.so $(OBJS) 
+	$(CXX) -shared -o lib/libClothoid.so $(OBJS)
 
 install: lib
 	@$(MKDIR) $(PREFIX)/lib
@@ -85,9 +86,8 @@ run:
 
 doc:
 	doxygen
-	
+
 clean:
 	rm -f lib/libClothoid.* lib/libClothoid.* src/*.o
 
 	rm -rf bin
-	

@@ -4,7 +4,7 @@
  |                                                                          |
  |         , __                 , __                                        |
  |        /|/  \               /|/  \                                       |
- |         | __/ _   ,_         | __/ _   ,_                                | 
+ |         | __/ _   ,_         | __/ _   ,_                                |
  |         |   \|/  /  |  |   | |   \|/  /  |  |   |                        |
  |         |(__/|__/   |_/ \_/|/|(__/|__/   |_/ \_/|/                       |
  |                           /|                   /|                        |
@@ -25,6 +25,7 @@
 #define CLOTHOID_HH
 
 #include <vector>
+#include <ostream>
 
 //! Clothoid computations routine
 namespace Clothoid {
@@ -33,7 +34,7 @@ namespace Clothoid {
 
   typedef double valueType ;
   typedef int    indexType ;
-  
+
   /*\
    |   _____                         _
    |  |  ___| __ ___  ___ _ __   ___| |
@@ -69,7 +70,7 @@ namespace Clothoid {
              valueType S[] ) ;
 
   /*! \brief Compute the Fresnel integrals
-   * \f[ 
+   * \f[
    *   \int_0^1 t^k \cos\left(a\frac{t^2}{2} + b t + c\right) dt,\qquad
    *   \int_0^1 t^k \sin\left(a\frac{t^2}{2} + b t + c\right) dt
    * \f]
@@ -89,14 +90,14 @@ namespace Clothoid {
                         valueType intS[] ) ;
 
   /*! \brief Compute the Fresnel integrals
-   * \f[ 
+   * \f[
    *   \int_0^1 t^k \cos\left(a\frac{t^2}{2} + b t + c\right) dt,\qquad
    *   \int_0^1 t^k \sin\left(a\frac{t^2}{2} + b t + c\right) dt
    * \f]
    * \param a      parameter \f$ a \f$
    * \param b      parameter \f$ b \f$
    * \param c      parameter \f$ c \f$
-   * \param intC   cosine integrals, 
+   * \param intC   cosine integrals,
    * \param intS   sine integrals
    */
   void
@@ -105,7 +106,7 @@ namespace Clothoid {
                         valueType   c,
                         valueType & intC,
                         valueType & intS ) ;
-  
+
   /*\
    |    ____ _       _   _           _     _
    |   / ___| | ___ | |_| |__   ___ (_) __| |
@@ -156,7 +157,7 @@ namespace Clothoid {
   //! Compute Lommel function
   valueType
   LommelReduced( valueType mu, valueType nu, valueType z ) ;
-  
+
   class ClothoidCurve ; // forward declaration
 
   /*\
@@ -197,7 +198,7 @@ namespace Clothoid {
     }
 
     ~Triangle2D() {}
-    
+
     valueType x1() const { return p1[0] ; }
     valueType y1() const { return p1[1] ; }
     valueType x2() const { return p2[0] ; }
@@ -207,11 +208,11 @@ namespace Clothoid {
 
     bool intersect( Triangle2D const & t2 ) const ;
     bool overlap( Triangle2D const & t2 ) const ;
-    
+
     friend class ClothoidCurve ;
 
   };
-  
+
   /*\
    |    ____ _       _   _           _     _  ____
    |   / ___| | ___ | |_| |__   ___ (_) __| |/ ___|   _ _ ____   _____
@@ -246,7 +247,7 @@ namespace Clothoid {
                         valueType tolerance ) const ;
 
   public:
-  
+
     ClothoidCurve()
     : x0(0)
     , y0(0)
@@ -316,7 +317,7 @@ namespace Clothoid {
 
     ClothoidCurve const & operator = ( ClothoidCurve const & s )
     { copy(s) ; return *this ; }
-    
+
     valueType getX0()      const { return x0 ; }
     valueType getY0()      const { return y0 ; }
     valueType getTheta0()  const { return theta0 ; }
@@ -490,7 +491,7 @@ namespace Clothoid {
     reverse() ;
 
   } ;
-  
+
   /*\
    |    ____ ____     _       _
    |   / ___|___ \ __| | __ _| |_ __ _
@@ -522,7 +523,7 @@ namespace Clothoid {
     valueType DeltaTheta ;
 
   public:
-  
+
     G2data()
     : tolerance(1e-10)
     , maxIter(20)
@@ -555,7 +556,7 @@ namespace Clothoid {
     setMaxIter( int tol ) ;
 
   } ;
-  
+
   /*\
    |    ____ ____            _           ____
    |   / ___|___ \ ___  ___ | |_   _____|___ \ __ _ _ __ ___
@@ -592,7 +593,7 @@ namespace Clothoid {
     buildSolution( valueType alpha, valueType L ) ;
 
   public:
-  
+
     using G2data::setup ;
     using G2data::setTolerance ;
     using G2data::setMaxIter ;
@@ -607,7 +608,7 @@ namespace Clothoid {
     ClothoidCurve const & getS1() const { return S1 ; }
 
   } ;
-  
+
   /*\
    |    ____ ____            _           _____
    |   / ___|___ \ ___  ___ | |_   _____|___ /  __ _ _ __ ___
@@ -635,7 +636,7 @@ namespace Clothoid {
     buildSolution( valueType eta, valueType zeta ) ;
 
   public:
-    
+
     using G2data::setup ;
     using G2data::setTolerance ;
     using G2data::setMaxIter ;
