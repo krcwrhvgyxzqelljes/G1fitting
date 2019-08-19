@@ -34,22 +34,31 @@ main(int argc, char** argv) {
   Clothoid::ClothoidCurve curve = Clothoid::ClothoidCurve(p0, m_pi*angle0, p1, m_pi*angle1);
 
   // cout << curve;
+  // double x0 = curve.getX0();
+  // double y0 = curve.getY0();
   double k = curve.getKappa();
   double dk = curve.getKappa_D();
   double len = curve.getSmax();
-  cout << "k: " << k << "\n";
+  cout << "k0: " << k << "\n";
   cout << "dk: " << dk << "\n";
-  cout << "len: " << len << "\n";
+  cout << "curve length: " << len << "\n";
   double interval = len/(npts - 1);
-  double C[npts];
-  double S[npts];
+  Clothoid::ClothoidPoint points[npts];
   for (int i = 0; i < npts; i++) {
     double t = i * interval;
     //cout << "distance along curve: " << t << "\n";
     double intC = 0.0;
     double intS = 0.0;
     Clothoid::GeneralizedFresnelCS(dk * pow(t, 2.0), k*t, angle0, intC, intS);
-    cout << "C" << i << ": " << intC << " / S" << i << ": " << intS << "\n";
+    //cout << "C" << i << ": " << intC << " / S" << i << ": " << intS << "\n";
+    double x = x0 + t * intC;
+    double y = y0 + t * intS;
+    Clothoid::ClothoidPoint point = Clothoid::ClothoidPoint();
+    point.x = x;
+    point.y = y;
+    point.k = k + dk*t;
+    cout << "{ index: " << i << ", coordinate: [" << point.x << ", " << point.y << "], curvature: " << point.k << " }\n";
+    points[i] = point;
   }
 
   // X = [ X x0 + t*C ] ;

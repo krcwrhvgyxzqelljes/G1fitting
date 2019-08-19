@@ -493,6 +493,25 @@ namespace Clothoid {
   } ;
 
   /*\
+   |
+   |  ClothoidPoint
+   |
+  \*/
+
+  class ClothoidPoint {
+
+  public:
+    double x;
+    double y;
+    double theta;
+    double k;
+
+    ClothoidPoint()
+    {}
+
+  };
+
+  /*\
    |    ____ ____     _       _
    |   / ___|___ \ __| | __ _| |_ __ _
    |  | |  _  __) / _` |/ _` | __/ _` |
