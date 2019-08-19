@@ -34,12 +34,7 @@ main(int argc, char** argv) {
   p1[0] = x1;
   p1[1] = y1;
 
-  // double res [3];
   Clothoid::ClothoidCurve curve = Clothoid::ClothoidCurve(p0, m_pi*angle0, p1, m_pi*angle1);
-
-  // cout << curve;
-  // double x0 = curve.getX0();
-  // double y0 = curve.getY0();
   double k = curve.getKappa();
   double dk = curve.getKappa_D();
   double len = curve.getSmax();
@@ -48,7 +43,7 @@ main(int argc, char** argv) {
   cout << "dk: " << dk << "\n";
   cout << "interval: " << interval << "\n";
   cout << "curve length: " << len << "\n";
-  Clothoid::ClothoidPoint points[npts];
+  // file output will be a json array
   fileOutput << "[";
   for (int i = 0; i < npts; i++) {
     double t = i * interval;
@@ -56,15 +51,11 @@ main(int argc, char** argv) {
     double intC = 0.0;
     double intS = 0.0;
     Clothoid::GeneralizedFresnelCS(dk * pow(t, 2.0), k*t, angle0, intC, intS);
-    //cout << "C" << i << ": " << intC << " / S" << i << ": " << intS << "\n";
     double x = x0 + t * intC;
     double y = y0 + t * intS;
-    Clothoid::ClothoidPoint point = Clothoid::ClothoidPoint();
-    point.x = x;
-    point.y = y;
-    point.k = k + dk*t;
+    double pointK = k + dk*t;
     ostringstream os;
-    os << "{ \"index\": " << i << ", \"coordinate\": [" << point.x << ", " << point.y << "], \"curvature\": " << point.k << " }";
+    os << "{\"index\": "<<i<<", \"coordinate\": ["<<x<<", "<<y<<"], \"curvature\": "<<pointK<<"}";
     if (i == npts - 1) {
       os << "]\n";
     } else {
@@ -73,8 +64,6 @@ main(int argc, char** argv) {
     string s = os.str();
     fileOutput << s;
     cout << s;
-    points[i] = point;
   }
-  fileOutput << "]";
   return 0;
 }
