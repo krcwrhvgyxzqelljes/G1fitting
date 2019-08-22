@@ -11,8 +11,9 @@ using namespace std ;
 
 int
 main(int argc, char** argv) {
-  if ( argc < 9) {
-    cout << "Required arguments: x0 y0 angle0 x1 y1 angle1 pointCount outputFile" << "\n";
+  cout.precision(15);
+  if ( argc < 8) {
+    cout << "Required arguments: x0 y0 angle0 x1 y1 angle1 pointCount" << "\n";
     return 1;
   }
   double x0, y0, angle0, x1, y1, angle1;
@@ -25,7 +26,6 @@ main(int argc, char** argv) {
   y1 = atof(argv[5]);
   angle1 = atof(argv[6]);
   npts = atoi(argv[7]);
-  fileOutput.open(argv[8], std::ios::app);
 
   double p0 [2];
   double p1 [2];
@@ -39,31 +39,22 @@ main(int argc, char** argv) {
   double dk = curve.getKappa_D();
   double len = curve.getSmax();
   double interval = len/(npts - 1);
-  cout << "k0: " << k << "\n";
-  cout << "dk: " << dk << "\n";
-  cout << "interval: " << interval << "\n";
-  cout << "curve length: " << len << "\n";
   // file output will be a json array
-  fileOutput << "[";
+  cout << "[";
   for (int i = 0; i < npts; i++) {
     double t = i * interval;
-    //cout << "distance along curve: " << t << "\n";
     double intC = 0.0;
     double intS = 0.0;
     Clothoid::GeneralizedFresnelCS(dk * pow(t, 2.0), k*t, angle0, intC, intS);
     double x = x0 + t * intC;
     double y = y0 + t * intS;
     double pointK = k + dk*t;
-    ostringstream os;
-    os << "{\"index\": "<<i<<", \"coordinate\": ["<<x<<", "<<y<<"], \"curvature\": "<<pointK<<"}";
+    cout << "{\"index\": "<<i<<", \"coordinate\": ["<<x<<", "<<y<<"], \"curvature\": "<<pointK<<"}";
     if (i == npts - 1) {
-      os << "]\n";
+      cout << "]\n";
     } else {
-      os << ",\n";
+      cout << ",\n";
     }
-    string s = os.str();
-    fileOutput << s;
-    cout << s;
   }
   return 0;
 }
