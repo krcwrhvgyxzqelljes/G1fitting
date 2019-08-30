@@ -27,17 +27,11 @@ main(int argc, char** argv) {
   angle1 = atof(argv[6]);
   npts = atoi(argv[7]);
 
-  double p0 [2];
-  double p1 [2];
-  p0[0] = x0;
-  p0[1] = y0;
-  p1[0] = x1;
-  p1[1] = y1;
-
-  Clothoid::ClothoidCurve curve = Clothoid::ClothoidCurve(p0, m_pi*angle0, p1, m_pi*angle1);
-  double k = curve.getKappa();
-  double dk = curve.getKappa_D();
-  double len = curve.getSmax();
+  double k;
+  double dk;
+  double len;
+  Clothoid::buildClothoid(x0, y0, angle0, x1, y1, angle1, k, dk, len);
+  // cout << "k: " << k << ", dk: " << dk << ", len: " << len << "\n";
   double interval = len/(npts - 1);
   // file output will be a json array
   cout << "[";
@@ -50,11 +44,10 @@ main(int argc, char** argv) {
     double y = y0 + t * intS;
     double pointK = k + dk*t;
     cout << "{\"index\": "<<i<<", \"coordinate\": ["<<x<<", "<<y<<"], \"curvature\": "<<pointK<<"}";
-    if (i == npts - 1) {
-      cout << "]\n";
-    } else {
+    if (i < npts - 1) {
       cout << ",\n";
     }
   }
+  cout << "]\n";
   return 0;
 }
