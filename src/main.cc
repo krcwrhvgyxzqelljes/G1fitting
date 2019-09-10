@@ -34,6 +34,7 @@ main(int argc, char** argv) {
   // cout << "k: " << k << ", dk: " << dk << ", len: " << len << "\n";
   double interval = len/(npts - 1);
   // file output will be a json array
+  cout << "{\"length\": "<<len<<", \"dk\": "<<dk<<", \"points\": ";
   cout << "[";
   for (int i = 0; i < npts; i++) {
     double t = i * interval;
@@ -43,11 +44,11 @@ main(int argc, char** argv) {
     double x = x0 + t * intC;
     double y = y0 + t * intS;
     double pointK = k + dk*t;
-    cout << "{\"index\": "<<i<<", \"coordinate\": ["<<x<<", "<<y<<"], \"curvature\": "<<pointK<<"}";
+    cout << "{\"distance\": "<<t<<", \"coordinate\": ["<<x<<", "<<y<<"], \"curvature\": "<<pointK<<"}";
     if (i < npts - 1) {
       cout << ",\n";
     }
   }
-  cout << "]\n";
+  cout << "]}\n";
   return 0;
 }
